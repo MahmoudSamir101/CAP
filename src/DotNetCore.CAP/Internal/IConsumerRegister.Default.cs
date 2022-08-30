@@ -165,7 +165,7 @@ namespace DotNetCore.CAP.Internal
 
         public void Pulse()
         {
-            _cts.Cancel();
+            _cts.Cancel();  
             _cts.Dispose();
         }
 
@@ -292,6 +292,7 @@ namespace DotNetCore.CAP.Internal
                     _logger.LogWarning("RabbitMQ consumer cancelled. --> " + logmsg.Reason);
                     break;
                 case MqLogType.ConsumerRegistered:
+                    _isHealthy = true;
                     _logger.LogInformation("RabbitMQ consumer registered. --> " + logmsg.Reason);
                     break;
                 case MqLogType.ConsumerUnregistered:
@@ -318,6 +319,7 @@ namespace DotNetCore.CAP.Internal
                     _logger.LogError("NATS subscriber received an error. --> " + logmsg.Reason);
                     break;
                 case MqLogType.ConnectError:
+                    _isHealthy = false;
                     _logger.LogError("NATS server connection error. -->  " + logmsg.Reason);
                     break;
                 case MqLogType.InvalidIdFormat:
